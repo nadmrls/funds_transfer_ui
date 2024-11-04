@@ -126,12 +126,26 @@ class _MainscreenState extends State<Mainscreen> {
                     data_yesterday: '',
                   )),
                   const SizedBox(width: 20),
+                  // Expanded(
+                  //     child: CustomContainer2(
+                  //   title: 'Counter',
+                  //   data_today: 'data1',
+                  //   data_yesterday: 'data2',
+                  // )),
                   Expanded(
-                      child: CustomContainer2(
-                    title: 'Counter',
-                    data_today: 'data1',
-                    data_yesterday: 'data2',
+                      child: CustomContainer(
+                    title: 'Credit Counter',
+                    data_today: '',
+                    data_yesterday: '',
                   )),
+                  const SizedBox(width: 20),
+                  Expanded(
+                      child: CustomContainer(
+                    title: 'Debit Counter',
+                    data_today: '',
+                    data_yesterday: '',
+                  )),
+                  const SizedBox(width: 20),
                 ],
               ),
               const SizedBox(

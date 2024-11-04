@@ -142,7 +142,7 @@ class MonthlySalesBarChart extends StatelessWidget {
                 );
               }).toList(),
               minY: 0,
-              maxY: 2000,
+              maxY: 3000,
             ),
           ),
         );

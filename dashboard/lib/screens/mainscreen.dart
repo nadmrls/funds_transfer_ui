@@ -1,3 +1,4 @@
+import 'package:dashboard/utils/appcolor.dart';
 import 'package:dashboard/widgets/bar_graph.dart';
 import 'package:dashboard/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class _MainscreenState extends State<Mainscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.mainscreenBG,
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         child: SingleChildScrollView(
@@ -24,19 +26,18 @@ class _MainscreenState extends State<Mainscreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200, // Background color of dropdown
-                  borderRadius: BorderRadius.circular(20),
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.grey, width: 1),
                 ),
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     value: dropdownValue,
                     icon: const Icon(Icons.arrow_drop_down,
-                        color: Colors.deepPurple),
-                    dropdownColor:
-                        Colors.white, // Dropdown menu background color
+                        color: Color.fromARGB(255, 123, 123, 123)),
+                    dropdownColor: AppColors.primaryColor,
                     style: const TextStyle(
-                      color: Colors.deepPurple, // Text color
+                      color: Color.fromARGB(255, 123, 123, 123),
                       fontWeight: FontWeight.bold,
                     ),
                     borderRadius: BorderRadius.circular(8),
@@ -62,11 +63,27 @@ class _MainscreenState extends State<Mainscreen> {
               const SizedBox(height: 20),
               const Row(
                 children: [
-                  Expanded(child: CustomContainer(background: Colors.red)),
+                  Expanded(
+                      child: CustomContainer(
+                    title: 'Debit',
+                    data_today: '250',
+                    data_yesterday: '300',
+                    comment: 'try comment',
+                  )),
                   const SizedBox(width: 20),
-                  Expanded(child: CustomContainer(background: Colors.blue)),
+                  Expanded(
+                      child: CustomContainer(
+                    title: 'Credit',
+                    data_today: '',
+                    data_yesterday: '',
+                  )),
                   const SizedBox(width: 20),
-                  Expanded(child: CustomContainer(background: Colors.green)),
+                  Expanded(
+                      child: CustomContainer(
+                    title: 'Counter',
+                    data_today: '',
+                    data_yesterday: '',
+                  )),
                 ],
               ),
               const SizedBox(
@@ -74,7 +91,7 @@ class _MainscreenState extends State<Mainscreen> {
               ),
               Container(
                 width: double.infinity,
-                height: 500,
+                height: 320,
                 child: BarGraph(),
               ),
               const SizedBox(
@@ -82,11 +99,26 @@ class _MainscreenState extends State<Mainscreen> {
               ),
               const Row(
                 children: [
-                  Expanded(child: CustomContainer(background: Colors.red)),
+                  Expanded(
+                      child: CustomContainer(
+                    title: '',
+                    data_today: '',
+                    data_yesterday: '',
+                  )),
                   const SizedBox(width: 20),
-                  Expanded(child: CustomContainer(background: Colors.blue)),
+                  Expanded(
+                      child: CustomContainer(
+                    title: '',
+                    data_today: '',
+                    data_yesterday: '',
+                  )),
                   const SizedBox(width: 20),
-                  Expanded(child: CustomContainer(background: Colors.green)),
+                  Expanded(
+                      child: CustomContainer(
+                    title: '',
+                    data_today: '',
+                    data_yesterday: '',
+                  )),
                 ],
               ),
               const SizedBox(

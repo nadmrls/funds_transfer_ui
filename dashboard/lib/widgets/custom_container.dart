@@ -7,6 +7,7 @@ class CustomContainer extends StatelessWidget {
   final String data_today;
   final String data_yesterday;
   final String comment;
+  final bool test;
 
   const CustomContainer({
     super.key,
@@ -14,6 +15,7 @@ class CustomContainer extends StatelessWidget {
     required this.data_today,
     required this.data_yesterday,
     this.comment = '',
+    required this.test,
   });
 
   @override
@@ -35,32 +37,50 @@ class CustomContainer extends StatelessWidget {
                   style: AppTextStyles.custom_container_title,
                 ),
               ),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Column(
-                  children: [
-                    Column(
+              Container(
+                child: Stack(children: [
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Column(
                       children: [
+                        Column(
+                          children: [
+                            Text(
+                              data_today,
+                              style: AppTextStyles.custom_container_data,
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          indent: 50,
+                        ),
                         Text(
-                          data_today,
+                          data_yesterday,
                           style: AppTextStyles.custom_container_data,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          comment,
+                          style: AppTextStyles.custom_container_comment,
                         ),
                       ],
                     ),
-                    Divider(),
-                    Text(
-                      data_yesterday,
-                      style: AppTextStyles.custom_container_data,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      comment,
-                      style: AppTextStyles.custom_container_comment,
-                    )
-                  ],
-                ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    top: 30,
+                    child: Icon(
+                        test
+                            ? Icons.arrow_upward_rounded
+                            : Icons.arrow_downward_rounded,
+                        size: 50,
+                        color: test
+                            ? Color.fromARGB(255, 26, 141, 20)
+                            : Color.fromARGB(255, 243, 33, 33)),
+                  )
+                ]),
               ),
             ],
           )

@@ -138,9 +138,9 @@ class MonthlySalesBarChart extends StatelessWidget {
   }
 
   double _getMaxY(List<double> counts) {
-    if (counts.isEmpty) return 10000;
+    if (counts.isEmpty) return 20000;
     double maxCount = counts.reduce((a, b) => a > b ? a : b);
-    return ((maxCount ~/ 10000) + 1) * 10000;
+    return ((maxCount ~/ 20000) + 1) * 20000;
   }
 
   double _getInterval(List<double> counts) {

@@ -20,11 +20,20 @@ class _MainscreenState extends State<Mainscreen> {
   bool isLoading = true;
   double? totalCreditAmount;
   double? totalDebitAmount;
+  double totalCreditAmountYes = 229.1;
+  double totalDebitAmountYes = 123.24;
   int? totalDebitCount;
   int? totalCreditCount;
+  int totalDebitCountYes = 10;
+  int totalCreditCountYes = 10;
   List<Map<String, dynamic>> transactions = [];
   List<String> narrativeValue = [];
   List<double> countTransac = [];
+
+  bool isHigher = true;
+  bool isHigher2 = true;
+  bool isHigher3 = true;
+  bool isHigher4 = true;
 
   @override
   void initState() {
@@ -118,6 +127,18 @@ class _MainscreenState extends State<Mainscreen> {
       fetchTotalDebitCount(narrative),
       fetchTotalCreditCount(narrative),
     ]);
+
+    // After fetching the totals, compare and set the isHigher flags
+    setState(() {
+      isHigher =
+          (totalDebitAmount != null && totalDebitAmount! > totalDebitAmountYes);
+      isHigher2 = (totalCreditAmount != null &&
+          totalCreditAmount! > totalCreditAmountYes);
+      isHigher3 =
+          (totalCreditCount != null && totalCreditCount! > totalCreditCountYes);
+      isHigher4 =
+          (totalDebitCount != null && totalDebitCount! > totalDebitCountYes);
+    });
   }
 
   Future<void> fetchTotalCreditAmount(String narrative) async {
@@ -256,6 +277,7 @@ class _MainscreenState extends State<Mainscreen> {
                 children: [
                   Expanded(
                     child: CustomContainer(
+                      test: isHigher,
                       title: 'Debit',
                       data_today: totalDebitAmount != null
                           ? totalDebitAmount.toString()
@@ -267,6 +289,7 @@ class _MainscreenState extends State<Mainscreen> {
                   const SizedBox(width: 20),
                   Expanded(
                     child: CustomContainer(
+                      test: isHigher2,
                       title: 'Credit',
                       data_today: totalCreditAmount != null
                           ? totalCreditAmount.toString()
@@ -277,6 +300,7 @@ class _MainscreenState extends State<Mainscreen> {
                   const SizedBox(width: 20),
                   Expanded(
                     child: CustomContainer(
+                      test: isHigher3,
                       title: 'Credit Counter',
                       data_today: totalCreditCount != null
                           ? totalCreditCount.toString()
@@ -287,6 +311,7 @@ class _MainscreenState extends State<Mainscreen> {
                   const SizedBox(width: 20),
                   Expanded(
                     child: CustomContainer(
+                      test: isHigher4,
                       title: 'Debit Counter',
                       data_today: totalDebitCount != null
                           ? totalDebitCount.toString()
@@ -299,6 +324,9 @@ class _MainscreenState extends State<Mainscreen> {
               ),
               const SizedBox(height: 20),
               Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15)),
                 width: double.infinity,
                 height: 550,
                 child: BarGraph(

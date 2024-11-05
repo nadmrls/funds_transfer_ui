@@ -3,6 +3,7 @@ import 'package:dashboard/widgets/bar_graph.dart';
 import 'package:dashboard/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:shimmer/shimmer.dart';
 
@@ -192,8 +193,14 @@ class _MainscreenState extends State<Mainscreen> {
     }
   }
 
+  final DateTime today = DateTime.now();
+  final DateTime yesterday = DateTime.now().subtract(const Duration(days: 1));
+
   @override
   Widget build(BuildContext context) {
+    final DateFormat dateFormat = DateFormat("MMM. d, yyyy");
+    final String todayLabel = dateFormat.format(today);
+    final String yesterdayLabel = dateFormat.format(yesterday);
     return Scaffold(
       backgroundColor: AppColors.mainscreenBG,
       body: Padding(
@@ -256,6 +263,8 @@ class _MainscreenState extends State<Mainscreen> {
                 children: [
                   Expanded(
                     child: CustomContainer(
+                      todaylabel: todayLabel,
+                      yesterdaylabel: yesterdayLabel,
                       title: 'Debit',
                       data_today: totalDebitAmount != null
                           ? totalDebitAmount.toString()
@@ -267,31 +276,40 @@ class _MainscreenState extends State<Mainscreen> {
                   const SizedBox(width: 20),
                   Expanded(
                     child: CustomContainer(
-                      title: 'Credit',
-                      data_today: totalCreditAmount != null
-                          ? totalCreditAmount.toString()
-                          : 'Loading...',
-                      data_yesterday: '',
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomContainer(
-                      title: 'Credit Counter',
-                      data_today: totalCreditCount != null
-                          ? totalCreditCount.toString()
-                          : 'Loading...',
-                      data_yesterday: '',
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomContainer(
+                      todaylabel: todayLabel,
+                      yesterdaylabel: yesterdayLabel,
                       title: 'Debit Counter',
-                      data_today: totalDebitCount != null
-                          ? totalDebitCount.toString()
+                      data_today: totalDebitAmount != null
+                          ? totalDebitAmount.toString()
                           : 'Loading...',
-                      data_yesterday: '',
+                      data_yesterday: '300',
+                      comment: 'Try comment',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: CustomContainer(
+                      todaylabel: todayLabel,
+                      yesterdaylabel: yesterdayLabel,
+                      title: 'Credit',
+                      data_today: totalDebitAmount != null
+                          ? totalDebitAmount.toString()
+                          : 'Loading...',
+                      data_yesterday: '300',
+                      comment: 'Try comment',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: CustomContainer(
+                      todaylabel: todayLabel,
+                      yesterdaylabel: yesterdayLabel,
+                      title: 'Credit Counter',
+                      data_today: totalDebitAmount != null
+                          ? totalDebitAmount.toString()
+                          : 'Loading...',
+                      data_yesterday: '300',
+                      comment: 'Try comment',
                     ),
                   ),
                   const SizedBox(width: 20),

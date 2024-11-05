@@ -1,7 +1,6 @@
 import 'package:dashboard/utils/appcolor.dart';
 import 'package:dashboard/widgets/bar_graph.dart';
 import 'package:dashboard/widgets/custom_container.dart';
-import 'package:dashboard/widgets/custom_container2.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,11 +18,66 @@ class _MainscreenState extends State<Mainscreen> {
   List<String> narratives = [];
   String? dropdownValue;
   bool isLoading = true;
+  double? totalCreditAmount;
+  double? totalDebitAmount;
+  int? totalDebitCount;
+  int? totalCreditCount;
+  List<Map<String, dynamic>> transactions = [];
+  List<String> narrativeValue = [];
+  List<double> countTransac = [];
 
   @override
   void initState() {
     super.initState();
     fetchNarratives();
+    fetchAllTransactions();
+  }
+
+  @override
+  void dispose() {
+    client.close(); // Clean up the client when not in use
+    super.dispose();
+  }
+
+  Future<void> fetchAllTransactions() async {
+    try {
+      final response =
+          await http.get(Uri.parse('http://127.0.0.1:4000/transaction-count'));
+
+      if (response.statusCode == 200) {
+        List<dynamic> allTransactions = jsonDecode(response.body);
+        setState(() {
+          transactions = allTransactions
+              .map((transaction) => {
+                    'narrative': transaction['narrative'],
+                    'count': transaction['count'],
+                  })
+              .toList()
+              .cast<Map<String, dynamic>>();
+
+          // Clear the lists before adding new data
+          narrativeValue.clear();
+          countTransac.clear();
+
+          // Populate the narrativeValue and countTransac lists
+          for (var transaction in transactions) {
+            narrativeValue.add(transaction['narrative'] as String);
+            countTransac.add(transaction['count'].toDouble());
+          }
+          isLoading = false;
+        });
+      } else {
+        print('Failed to fetch transactions: ${response.statusCode}');
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (error) {
+      print('Error fetching transactions: $error');
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   Future<void> fetchNarratives() async {
@@ -34,21 +88,107 @@ class _MainscreenState extends State<Mainscreen> {
       if (response.statusCode == 200) {
         List<dynamic> allTransactions = jsonDecode(response.body);
         setState(() {
-          // Extract narratives from the response
           narratives = allTransactions
               .map((transaction) => transaction['narrative'] as String)
               .toList();
-          // Set the first item as the default dropdown value if available
           if (narratives.isNotEmpty) {
             dropdownValue = narratives.first;
+            fetchTotalAmounts(dropdownValue!);
           }
           isLoading = false;
         });
       } else {
         print('Failed to fetch narratives: ${response.statusCode}');
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (error) {
       print('Error fetching narratives: $error');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  Future<void> fetchTotalAmounts(String narrative) async {
+    await Future.wait([
+      fetchTotalCreditAmount(narrative),
+      fetchTotalDebitAmount(narrative),
+      fetchTotalDebitCount(narrative),
+      fetchTotalCreditCount(narrative),
+    ]);
+  }
+
+  Future<void> fetchTotalCreditAmount(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/total-credit-amount?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalCreditAmount = data['total_credit_amount'];
+        });
+      } else {
+        print('Failed to fetch total credit amount: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total credit amount: $error');
+    }
+  }
+
+  Future<void> fetchTotalDebitAmount(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/total-debit-amount?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalDebitAmount = data['total_debit_amount'];
+        });
+      } else {
+        print('Failed to fetch total debit amount: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total debit amount: $error');
+    }
+  }
+
+  Future<void> fetchTotalDebitCount(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/transaction-count-debit?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalDebitCount = data['count'];
+        });
+      } else {
+        print('Failed to fetch total debit count: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total debit count: $error');
+    }
+  }
+
+  Future<void> fetchTotalCreditCount(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/transaction-count-credit?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalCreditCount = data['count'];
+        });
+      } else {
+        print('Failed to fetch total credit count: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total credit count: $error');
     }
   }
 
@@ -94,9 +234,12 @@ class _MainscreenState extends State<Mainscreen> {
                           ),
                           borderRadius: BorderRadius.circular(8),
                           onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                            });
+                            if (newValue != null) {
+                              setState(() {
+                                dropdownValue = newValue;
+                              });
+                              fetchTotalAmounts(newValue);
+                            }
                           },
                           items: narratives
                               .map<DropdownMenuItem<String>>((String value) {
@@ -109,87 +252,59 @@ class _MainscreenState extends State<Mainscreen> {
                       ),
               ),
               const SizedBox(height: 20),
-              const Row(
+              Row(
                 children: [
                   Expanded(
-                      child: CustomContainer(
-                    title: 'Debit',
-                    data_today: '250',
-                    data_yesterday: '300',
-                    comment: 'try comment',
-                  )),
+                    child: CustomContainer(
+                      title: 'Debit',
+                      data_today: totalDebitAmount != null
+                          ? totalDebitAmount.toString()
+                          : 'Loading...',
+                      data_yesterday: '300',
+                      comment: 'Try comment',
+                    ),
+                  ),
                   const SizedBox(width: 20),
                   Expanded(
-                      child: CustomContainer(
-                    title: 'Credit',
-                    data_today: '',
-                    data_yesterday: '',
-                  )),
-                  const SizedBox(width: 20),
-                  // Expanded(
-                  //     child: CustomContainer2(
-                  //   title: 'Counter',
-                  //   data_today: 'data1',
-                  //   data_yesterday: 'data2',
-                  // )),
-                  Expanded(
-                      child: CustomContainer(
-                    title: 'Credit Counter',
-                    data_today: '',
-                    data_yesterday: '',
-                  )),
+                    child: CustomContainer(
+                      title: 'Credit',
+                      data_today: totalCreditAmount != null
+                          ? totalCreditAmount.toString()
+                          : 'Loading...',
+                      data_yesterday: '',
+                    ),
+                  ),
                   const SizedBox(width: 20),
                   Expanded(
-                      child: CustomContainer(
-                    title: 'Debit Counter',
-                    data_today: '',
-                    data_yesterday: '',
-                  )),
+                    child: CustomContainer(
+                      title: 'Credit Counter',
+                      data_today: totalCreditCount != null
+                          ? totalCreditCount.toString()
+                          : 'Loading...',
+                      data_yesterday: '',
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: CustomContainer(
+                      title: 'Debit Counter',
+                      data_today: totalDebitCount != null
+                          ? totalDebitCount.toString()
+                          : 'Loading...',
+                      data_yesterday: '',
+                    ),
+                  ),
                   const SizedBox(width: 20),
                 ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               Container(
                 width: double.infinity,
-                height: 320,
-                child: BarGraph(),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Row(
-                children: [
-                  Expanded(
-                      child: CustomContainer(
-                    title: '',
-                    data_today: '',
-                    data_yesterday: '',
-                  )),
-                  const SizedBox(width: 20),
-                  Expanded(
-                      child: CustomContainer(
-                    title: '',
-                    data_today: '',
-                    data_yesterday: '',
-                  )),
-                  const SizedBox(width: 20),
-                  Expanded(
-                      child: CustomContainer(
-                    title: '',
-                    data_today: '',
-                    data_yesterday: '',
-                  )),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                color: Colors.red,
-                width: double.infinity,
-                height: 500,
+                height: 550,
+                child: BarGraph(
+                  count: countTransac,
+                  narratives: narrativeValue,
+                ),
               ),
             ],
           ),

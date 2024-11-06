@@ -9,6 +9,8 @@ class CustomContainer extends StatelessWidget {
   final bool test;
   final Color background;
   final Icon titleIcon;
+  final String yesterdayLabel;
+  final String todayLabel;
 
   const CustomContainer({
     super.key,
@@ -19,6 +21,8 @@ class CustomContainer extends StatelessWidget {
     required this.test,
     required this.background,
     required this.titleIcon,
+    required this.yesterdayLabel,
+    required this.todayLabel,
   });
 
   @override
@@ -67,14 +71,26 @@ class CustomContainer extends StatelessWidget {
                                   data_today,
                                   style: AppTextStyles.custom_container_data,
                                 ),
+                                Text(
+                                  todayLabel,
+                                  style: AppTextStyles.custom_container_date,
+                                ),
                               ],
                             ),
-                            Divider(
+                            const Divider(
                               indent: 50,
                             ),
-                            Text(
-                              data_yesterday,
-                              style: AppTextStyles.custom_container_data,
+                            Column(
+                              children: [
+                                Text(
+                                  yesterdayLabel,
+                                  style: AppTextStyles.custom_container_date,
+                                ),
+                                Text(
+                                  data_yesterday,
+                                  style: AppTextStyles.custom_container_data,
+                                ),
+                              ],
                             ),
                             SizedBox(
                               height: 10,
@@ -95,8 +111,8 @@ class CustomContainer extends StatelessWidget {
                                 : Icons.arrow_downward_rounded,
                             size: 50,
                             color: test
-                                ? Color.fromARGB(255, 26, 141, 20)
-                                : Color.fromARGB(255, 243, 33, 33)),
+                                ? const Color.fromARGB(255, 26, 141, 20)
+                                : const Color.fromARGB(255, 243, 33, 33)),
                       )
                     ]),
                   ),

@@ -12,4 +12,8 @@ class AppTextStyles {
       fontStyle: FontStyle.italic,
       color: Color.fromARGB(255, 0, 0, 0),
       fontSize: 10);
+  static const TextStyle custom_container_date = TextStyle(
+      fontStyle: FontStyle.normal,
+      color: Color.fromARGB(255, 0, 0, 0),
+      fontSize: 12);
 }

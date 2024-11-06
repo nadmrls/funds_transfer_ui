@@ -368,7 +368,7 @@ class _MainscreenState extends State<Mainscreen> {
                   ),
                   const SizedBox(height: 20),
                   LayoutBuilder(builder: (context, constraints) {
-                    bool isWideScreen = constraints.maxWidth >= 950;
+                    bool isWideScreen = constraints.maxWidth >= 820;
                     double containerWidth = isWideScreen
                         ? constraints.maxWidth * 1.0
                         : constraints.maxWidth * 1.3;
@@ -537,7 +537,8 @@ class _MainscreenState extends State<Mainscreen> {
                                               ? NumberFormat('#,##0')
                                                   .format(totalDebitCount)
                                               : 'Loading...',
-                                          data_yesterday: totalDebitCountYes != null
+                                          data_yesterday: totalDebitCountYes !=
+                                                  null
                                               ? NumberFormat('#,##0')
                                                   .format(totalDebitCountYes)
                                               : 'Loading...',
@@ -559,13 +560,14 @@ class _MainscreenState extends State<Mainscreen> {
                                             title: 'Credit Counter',
                                             data_today: totalCreditCount != null
                                                 ? NumberFormat('#,##0')
-                                                .format(totalCreditCount)
+                                                    .format(totalCreditCount)
                                                 : 'Loading...',
                                             data_yesterday:
-                                            totalCreditCountYes != null
-                                                ? NumberFormat('#,##0')
-                                                .format(totalCreditCountYes)
-                                                : 'Loading...',
+                                                totalCreditCountYes != null
+                                                    ? NumberFormat('#,##0')
+                                                        .format(
+                                                            totalCreditCountYes)
+                                                    : 'Loading...',
                                             titleIcon: Icon(
                                               Icons.check_circle,
                                               color: const Color.fromARGB(

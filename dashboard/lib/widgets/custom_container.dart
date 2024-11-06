@@ -104,12 +104,12 @@ class CustomContainer extends StatelessWidget {
                       ),
                       Positioned(
                         left: 0,
-                        top: 15,
+                        top: 30,
                         child: Icon(
                             test
                                 ? Icons.arrow_upward_rounded
                                 : Icons.arrow_downward_rounded,
-                            size: 50,
+                            size: 40,
                             color: test
                                 ? const Color.fromARGB(255, 26, 141, 20)
                                 : const Color.fromARGB(255, 243, 33, 33)),

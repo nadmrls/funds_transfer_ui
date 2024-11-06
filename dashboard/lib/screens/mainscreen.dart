@@ -372,184 +372,210 @@ class _MainscreenState extends State<Mainscreen> {
                     double containerWidth = isWideScreen
                         ? constraints.maxWidth * 1.0
                         : constraints.maxWidth * 1.3;
-                    double containerHeight = isWideScreen ? 200.0 : 750.0;
+                    double containerHeight = isWideScreen ? 200.0 : 400.0;
                     return Container(
-                      height: containerHeight,
-                      width: containerWidth,
-                      child: isWideScreen ? Row(
-                        children: [
-                          Expanded(
-                            child: CustomContainer(
-                                todayLabel: todayLabel,
-                                yesterdayLabel: yesterdayLabel,
-                                background:
-                                    const Color.fromARGB(255, 90, 167, 195),
-                                test: isHigher,
-                                title: 'Debit',
-                                data_today: totalDebitAmount != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
-                                    : 'Loading...',
-                                data_yesterday: totalDebitAmountYes != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}'
-                                    : 'Loading...',
-                                titleIcon: Icon(
-                                  Icons.remove_circle,
-                                  color: const Color.fromARGB(255, 42, 77, 124),
-                                )),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomContainer(
-                                todayLabel: todayLabel,
-                                yesterdayLabel: yesterdayLabel,
-                                background: Color.fromARGB(255, 90, 195, 129),
-                                test: isHigher2,
-                                title: 'Credit',
-                                data_today: totalCreditAmount != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmount)}'
-                                    : 'Loading...',
-                                data_yesterday: totalCreditAmountYes != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}'
-                                    : 'Loading...',
-                                titleIcon: Icon(
-                                  Icons.add_circle,
-                                  color: const Color.fromARGB(255, 42, 77, 124),
-                                )),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomContainer(
-                              todayLabel: todayLabel,
-                              yesterdayLabel: yesterdayLabel,
-                              background:
-                                  const Color.fromARGB(255, 104, 189, 162),
-                              test: isHigher4,
-                              title: 'Debit Counter',
-                              data_today: totalDebitCount != null
-                                  ? NumberFormat('#,##0')
-                                      .format(totalDebitCount)
-                                  : 'Loading...',
-                              data_yesterday: totalDebitCountYes != null
-                                  ? NumberFormat('#,##0')
-                                      .format(totalDebitCountYes)
-                                  : 'Loading...',
-                              titleIcon: Icon(
-                                Icons.format_list_numbered,
-                                color: const Color.fromARGB(255, 42, 77, 124),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomContainer(
-                                todayLabel: todayLabel,
-                                yesterdayLabel: yesterdayLabel,
-                                background:
-                                    const Color.fromARGB(255, 82, 153, 212),
-                                test: isHigher3,
-                                title: 'Credit Counter',
-                                data_today: totalCreditCount != null
-                                    ? NumberFormat('#,##0')
-                                        .format(totalCreditCount)
-                                    : 'Loading...',
-                                data_yesterday: totalCreditCountYes != null
-                                    ? NumberFormat('#,##0')
-                                        .format(totalCreditCountYes)
-                                    : 'Loading...',
-                                titleIcon: Icon(
-                                  Icons.check_circle,
-                                  color: const Color.fromARGB(255, 42, 77, 124),
-                                )),
-                          ),
-                        ],
-                      ) : Column(
-                        children: [
-                          Expanded(
-                            child: CustomContainer(
-                                todayLabel: todayLabel,
-                                yesterdayLabel: yesterdayLabel,
-                                background:
-                                const Color.fromARGB(255, 90, 167, 195),
-                                test: isHigher,
-                                title: 'Debit',
-                                data_today: totalDebitAmount != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
-                                    : 'Loading...',
-                                data_yesterday: totalDebitAmountYes != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}'
-                                    : 'Loading...',
-                                titleIcon: Icon(
-                                  Icons.remove_circle,
-                                  color: const Color.fromARGB(255, 42, 77, 124),
-                                )),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomContainer(
-                                todayLabel: todayLabel,
-                                yesterdayLabel: yesterdayLabel,
-                                background: Color.fromARGB(255, 90, 195, 129),
-                                test: isHigher2,
-                                title: 'Credit',
-                                data_today: totalCreditAmount != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmount)}'
-                                    : 'Loading...',
-                                data_yesterday: totalCreditAmountYes != null
-                                    ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}'
-                                    : 'Loading...',
-                                titleIcon: Icon(
-                                  Icons.add_circle,
-                                  color: const Color.fromARGB(255, 42, 77, 124),
-                                )),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomContainer(
-                              todayLabel: todayLabel,
-                              yesterdayLabel: yesterdayLabel,
-                              background:
-                              const Color.fromARGB(255, 104, 189, 162),
-                              test: isHigher4,
-                              title: 'Debit Counter',
-                              data_today: totalDebitCount != null
-                                  ? NumberFormat('#,##0')
-                                  .format(totalDebitCount)
-                                  : 'Loading...',
-                              data_yesterday: totalDebitCountYes != null
-                                  ? NumberFormat('#,##0')
-                                  .format(totalDebitCountYes)
-                                  : 'Loading...',
-                              titleIcon: Icon(
-                                Icons.format_list_numbered,
-                                color: const Color.fromARGB(255, 42, 77, 124),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: CustomContainer(
-                                todayLabel: todayLabel,
-                                yesterdayLabel: yesterdayLabel,
-                                background:
-                                const Color.fromARGB(255, 82, 153, 212),
-                                test: isHigher3,
-                                title: 'Credit Counter',
-                                data_today: totalCreditCount != null
-                                    ? NumberFormat('#,##0')
-                                    .format(totalCreditCount)
-                                    : 'Loading...',
-                                data_yesterday: totalCreditCountYes != null
-                                    ? NumberFormat('#,##0')
-                                    .format(totalCreditCountYes)
-                                    : 'Loading...',
-                                titleIcon: Icon(
-                                  Icons.check_circle,
-                                  color: const Color.fromARGB(255, 42, 77, 124),
-                                )),
-                          ),
-                        ],
-                      )
-                    );
+                        height: containerHeight,
+                        width: containerWidth,
+                        child: isWideScreen
+                            ? Row(
+                                children: [
+                                  Expanded(
+                                    child: CustomContainer(
+                                        todayLabel: todayLabel,
+                                        yesterdayLabel: yesterdayLabel,
+                                        background: const Color.fromARGB(
+                                            255, 90, 167, 195),
+                                        test: isHigher,
+                                        title: 'Debit',
+                                        data_today: totalDebitAmount != null
+                                            ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
+                                            : 'Loading...',
+                                        data_yesterday: totalDebitAmountYes !=
+                                                null
+                                            ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}'
+                                            : 'Loading...',
+                                        titleIcon: Icon(
+                                          Icons.remove_circle,
+                                          color: const Color.fromARGB(
+                                              255, 42, 77, 124),
+                                        )),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: CustomContainer(
+                                        todayLabel: todayLabel,
+                                        yesterdayLabel: yesterdayLabel,
+                                        background:
+                                            Color.fromARGB(255, 90, 195, 129),
+                                        test: isHigher2,
+                                        title: 'Credit',
+                                        data_today: totalCreditAmount != null
+                                            ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmount)}'
+                                            : 'Loading...',
+                                        data_yesterday: totalCreditAmountYes !=
+                                                null
+                                            ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}'
+                                            : 'Loading...',
+                                        titleIcon: Icon(
+                                          Icons.add_circle,
+                                          color: const Color.fromARGB(
+                                              255, 42, 77, 124),
+                                        )),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: CustomContainer(
+                                      todayLabel: todayLabel,
+                                      yesterdayLabel: yesterdayLabel,
+                                      background: const Color.fromARGB(
+                                          255, 104, 189, 162),
+                                      test: isHigher4,
+                                      title: 'Debit Counter',
+                                      data_today: totalDebitCount != null
+                                          ? NumberFormat('#,##0')
+                                              .format(totalDebitCount)
+                                          : 'Loading...',
+                                      data_yesterday: totalDebitCountYes != null
+                                          ? NumberFormat('#,##0')
+                                              .format(totalDebitCountYes)
+                                          : 'Loading...',
+                                      titleIcon: Icon(
+                                        Icons.format_list_numbered,
+                                        color: const Color.fromARGB(
+                                            255, 42, 77, 124),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  Expanded(
+                                    child: CustomContainer(
+                                        todayLabel: todayLabel,
+                                        yesterdayLabel: yesterdayLabel,
+                                        background: const Color.fromARGB(
+                                            255, 82, 153, 212),
+                                        test: isHigher3,
+                                        title: 'Credit Counter',
+                                        data_today: totalCreditCount != null
+                                            ? NumberFormat('#,##0')
+                                                .format(totalCreditCount)
+                                            : 'Loading...',
+                                        data_yesterday:
+                                            totalCreditCountYes != null
+                                                ? NumberFormat('#,##0')
+                                                    .format(totalCreditCountYes)
+                                                : 'Loading...',
+                                        titleIcon: Icon(
+                                          Icons.check_circle,
+                                          color: const Color.fromARGB(
+                                              255, 42, 77, 124),
+                                        )),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: CustomContainer(
+                                            todayLabel: todayLabel,
+                                            yesterdayLabel: yesterdayLabel,
+                                            background: const Color.fromARGB(
+                                                255, 90, 167, 195),
+                                            test: isHigher,
+                                            title: 'Debit',
+                                            data_today: totalDebitAmount != null
+                                                ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
+                                                : 'Loading...',
+                                            data_yesterday: totalDebitAmountYes !=
+                                                    null
+                                                ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}'
+                                                : 'Loading...',
+                                            titleIcon: Icon(
+                                              Icons.remove_circle,
+                                              color: const Color.fromARGB(
+                                                  255, 42, 77, 124),
+                                            )),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: CustomContainer(
+                                            todayLabel: todayLabel,
+                                            yesterdayLabel: yesterdayLabel,
+                                            background: Color.fromARGB(
+                                                255, 90, 195, 129),
+                                            test: isHigher2,
+                                            title: 'Credit',
+                                            data_today: totalCreditAmount !=
+                                                    null
+                                                ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmount)}'
+                                                : 'Loading...',
+                                            data_yesterday: totalCreditAmountYes !=
+                                                    null
+                                                ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}'
+                                                : 'Loading...',
+                                            titleIcon: Icon(
+                                              Icons.add_circle,
+                                              color: const Color.fromARGB(
+                                                  255, 42, 77, 124),
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: CustomContainer(
+                                          todayLabel: todayLabel,
+                                          yesterdayLabel: yesterdayLabel,
+                                          background: const Color.fromARGB(
+                                              255, 104, 189, 162),
+                                          test: isHigher4,
+                                          title: 'Debit Counter',
+                                          data_today: totalDebitCount != null
+                                              ? NumberFormat('#,##0')
+                                                  .format(totalDebitCount)
+                                              : 'Loading...',
+                                          data_yesterday: totalDebitCountYes != null
+                                              ? NumberFormat('#,##0')
+                                                  .format(totalDebitCountYes)
+                                              : 'Loading...',
+                                          titleIcon: Icon(
+                                            Icons.format_list_numbered,
+                                            color: const Color.fromARGB(
+                                                255, 42, 77, 124),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Expanded(
+                                        child: CustomContainer(
+                                            todayLabel: todayLabel,
+                                            yesterdayLabel: yesterdayLabel,
+                                            background: const Color.fromARGB(
+                                                255, 82, 153, 212),
+                                            test: isHigher3,
+                                            title: 'Credit Counter',
+                                            data_today: totalCreditCount != null
+                                                ? NumberFormat('#,##0')
+                                                .format(totalCreditCount)
+                                                : 'Loading...',
+                                            data_yesterday:
+                                            totalCreditCountYes != null
+                                                ? NumberFormat('#,##0')
+                                                .format(totalCreditCountYes)
+                                                : 'Loading...',
+                                            titleIcon: Icon(
+                                              Icons.check_circle,
+                                              color: const Color.fromARGB(
+                                                  255, 42, 77, 124),
+                                            )),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ));
                   }),
                   SizedBox(height: 20),
                   Column(

@@ -6,7 +6,7 @@ class CustomContainer extends StatelessWidget {
   final String data_today;
   final String data_yesterday;
   final String comment;
-  final bool test;
+  final int test;
   final Color background;
   final Icon titleIcon;
   final String yesterdayLabel;
@@ -106,13 +106,18 @@ class CustomContainer extends StatelessWidget {
                         left: 0,
                         top: 30,
                         child: Icon(
-                            test
-                                ? Icons.arrow_upward_rounded
-                                : Icons.arrow_downward_rounded,
-                            size: 40,
-                            color: test
-                                ? const Color.fromARGB(255, 26, 141, 20)
-                                : const Color.fromARGB(255, 243, 33, 33)),
+                          test == 1
+                              ? Icons.arrow_upward_rounded
+                              : test == 2
+                                  ? Icons.arrow_downward_rounded
+                                  : Icons.swap_horiz,
+                          size: 40,
+                          color: test == 1
+                              ? const Color.fromARGB(255, 26, 141, 20)
+                              : test == 2
+                                  ? const Color.fromARGB(255, 243, 33, 33)
+                                  : Colors.blue,
+                        ),
                       )
                     ]),
                   ),

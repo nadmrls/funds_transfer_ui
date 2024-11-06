@@ -31,10 +31,10 @@ class _MainscreenState extends State<Mainscreen> {
   List<String> narrativeValue = [];
   List<double> countTransac = [];
 
-  bool isHigher = true;
-  bool isHigher2 = true;
-  bool isHigher3 = true;
-  bool isHigher4 = true;
+  int iconID = 3;
+  int iconID2 = 3;
+  int iconID3 = 3;
+  int iconID4 = 3;
 
   @override
   void initState() {
@@ -133,16 +133,43 @@ class _MainscreenState extends State<Mainscreen> {
       fetchTotalDebitAmountYesterday(narrative)
     ]);
 
-    // After fetching the totals, compare and set the isHigher flags
     setState(() {
-      isHigher =
-          (totalDebitAmount != null && totalDebitAmount! > totalDebitAmountYes);
-      isHigher2 = (totalCreditAmount != null &&
-          totalCreditAmount! > totalCreditAmountYes);
-      isHigher3 =
-          (totalCreditCount != null && totalCreditCount! > totalCreditCountYes);
-      isHigher4 =
-          (totalDebitCount != null && totalDebitCount! > totalDebitCountYes);
+      if (totalDebitAmount != null && totalDebitAmount! > totalDebitAmountYes) {
+        iconID = 1;
+      } else if (totalDebitAmount != null &&
+          totalDebitAmount! < totalDebitAmountYes) {
+        iconID = 2;
+      } else {
+        iconID = 3;
+      }
+
+      if (totalCreditAmount != null &&
+          totalCreditAmount! > totalCreditAmountYes) {
+        iconID2 = 1;
+      } else if (totalCreditAmount != null &&
+          totalCreditAmount! < totalCreditAmountYes) {
+        iconID2 = 2;
+      } else {
+        iconID2 = 3;
+      }
+
+      if (totalCreditCount != null && totalCreditCount! > totalCreditCountYes) {
+        iconID3 = 1;
+      } else if (totalCreditCount != null &&
+          totalCreditCount! < totalCreditCountYes) {
+        iconID3 = 2;
+      } else {
+        iconID3 = 3;
+      }
+
+      if (totalDebitCount != null && totalDebitCount! > totalDebitCountYes) {
+        iconID4 = 1;
+      } else if (totalDebitCount != null &&
+          totalDebitCount! < totalDebitCountYes) {
+        iconID4 = 2;
+      } else {
+        iconID4 = 3;
+      }
     });
   }
 
@@ -385,15 +412,14 @@ class _MainscreenState extends State<Mainscreen> {
                                         yesterdayLabel: yesterdayLabel,
                                         background: const Color.fromARGB(
                                             255, 90, 167, 195),
-                                        test: isHigher,
+                                        test: iconID,
                                         title: 'Debit',
                                         data_today: totalDebitAmount != null
                                             ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
                                             : 'Loading...',
-                                        data_yesterday: totalDebitAmountYes !=
-                                                null
-                                            ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}'
-                                            : 'Loading...',
+                                        data_yesterday: totalDebitAmountYes == 0
+                                            ? '₱ 0.00'
+                                            : '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}',
                                         titleIcon: Icon(
                                           Icons.remove_circle,
                                           color: const Color.fromARGB(
@@ -407,15 +433,15 @@ class _MainscreenState extends State<Mainscreen> {
                                         yesterdayLabel: yesterdayLabel,
                                         background:
                                             Color.fromARGB(255, 90, 195, 129),
-                                        test: isHigher2,
+                                        test: iconID2,
                                         title: 'Credit',
                                         data_today: totalCreditAmount != null
                                             ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmount)}'
                                             : 'Loading...',
-                                        data_yesterday: totalCreditAmountYes !=
-                                                null
-                                            ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}'
-                                            : 'Loading...',
+                                        data_yesterday: totalCreditAmountYes ==
+                                                0
+                                            ? '₱ 0.00'
+                                            : '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}',
                                         titleIcon: Icon(
                                           Icons.add_circle,
                                           color: const Color.fromARGB(
@@ -429,16 +455,16 @@ class _MainscreenState extends State<Mainscreen> {
                                       yesterdayLabel: yesterdayLabel,
                                       background: const Color.fromARGB(
                                           255, 104, 189, 162),
-                                      test: isHigher4,
+                                      test: iconID4,
                                       title: 'Debit Counter',
                                       data_today: totalDebitCount != null
                                           ? NumberFormat('#,##0')
                                               .format(totalDebitCount)
                                           : 'Loading...',
-                                      data_yesterday: totalDebitCountYes != null
-                                          ? NumberFormat('#,##0')
-                                              .format(totalDebitCountYes)
-                                          : 'Loading...',
+                                      data_yesterday: totalDebitCountYes == 0
+                                          ? '0'
+                                          : NumberFormat('#,##0')
+                                              .format(totalDebitCountYes),
                                       titleIcon: Icon(
                                         Icons.format_list_numbered,
                                         color: const Color.fromARGB(
@@ -453,17 +479,16 @@ class _MainscreenState extends State<Mainscreen> {
                                         yesterdayLabel: yesterdayLabel,
                                         background: const Color.fromARGB(
                                             255, 82, 153, 212),
-                                        test: isHigher3,
+                                        test: iconID3,
                                         title: 'Credit Counter',
                                         data_today: totalCreditCount != null
                                             ? NumberFormat('#,##0')
                                                 .format(totalCreditCount)
                                             : 'Loading...',
-                                        data_yesterday:
-                                            totalCreditCountYes != null
-                                                ? NumberFormat('#,##0')
-                                                    .format(totalCreditCountYes)
-                                                : 'Loading...',
+                                        data_yesterday: totalCreditCountYes == 0
+                                            ? '0'
+                                            : NumberFormat('#,##0')
+                                                .format(totalCreditCountYes),
                                         titleIcon: Icon(
                                           Icons.check_circle,
                                           color: const Color.fromARGB(
@@ -482,7 +507,7 @@ class _MainscreenState extends State<Mainscreen> {
                                             yesterdayLabel: yesterdayLabel,
                                             background: const Color.fromARGB(
                                                 255, 90, 167, 195),
-                                            test: isHigher,
+                                            test: iconID,
                                             title: 'Debit',
                                             data_today: totalDebitAmount != null
                                                 ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
@@ -504,7 +529,7 @@ class _MainscreenState extends State<Mainscreen> {
                                             yesterdayLabel: yesterdayLabel,
                                             background: Color.fromARGB(
                                                 255, 90, 195, 129),
-                                            test: isHigher2,
+                                            test: iconID2,
                                             title: 'Credit',
                                             data_today: totalCreditAmount !=
                                                     null
@@ -531,7 +556,7 @@ class _MainscreenState extends State<Mainscreen> {
                                           yesterdayLabel: yesterdayLabel,
                                           background: const Color.fromARGB(
                                               255, 104, 189, 162),
-                                          test: isHigher4,
+                                          test: iconID4,
                                           title: 'Debit Counter',
                                           data_today: totalDebitCount != null
                                               ? NumberFormat('#,##0')
@@ -556,7 +581,7 @@ class _MainscreenState extends State<Mainscreen> {
                                             yesterdayLabel: yesterdayLabel,
                                             background: const Color.fromARGB(
                                                 255, 82, 153, 212),
-                                            test: isHigher3,
+                                            test: iconID3,
                                             title: 'Credit Counter',
                                             data_today: totalCreditCount != null
                                                 ? NumberFormat('#,##0')
@@ -617,7 +642,7 @@ class _MainscreenState extends State<Mainscreen> {
                             color: Color.fromARGB(255, 255, 255, 255),
                             border: Border.all(color: Colors.grey, width: 1)),
                         width: double.infinity,
-                        height: 450,
+                        height: 430,
                         child: BarGraph(
                           count: countTransac,
                           narratives: narrativeValue,

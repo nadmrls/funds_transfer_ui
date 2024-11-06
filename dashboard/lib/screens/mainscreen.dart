@@ -176,7 +176,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalCreditAmount(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/total-credit-amount?narrative=$narrative'));
+          'http://127.0.0.1:4000/dashboard/credit-amount?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -194,7 +194,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalCreditAmountYesterday(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/total-credit-amount-yesterday?narrative=$narrative'));
+          'http://127.0.0.1:4000/dashboard/credit-amount-yesterday?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -212,7 +212,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalDebitAmount(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/total-debit-amount?narrative=$narrative'));
+          'http://127.0.0.1:4000/dashboard/debit-amount?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -230,7 +230,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalDebitAmountYesterday(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/total-debit-amount-yesterday?narrative=$narrative'));
+          'http://127.0.0.1:4000/dashboard/debit-amount-yesterday?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -248,7 +248,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalDebitCount(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/transaction-count-debit?narrative=$narrative'));
+          'http://127.0.0.1:4000/transaction-count/debit?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -266,7 +266,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalCreditCount(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/transaction-count-credit?narrative=$narrative'));
+          'http://127.0.0.1:4000/transaction-count/credit?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -284,7 +284,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalDebitCountYesterday(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/transaction-count-debit-yesterday?narrative=$narrative'));
+          'http://127.0.0.1:4000/transaction-count/debit-yesterday?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -302,7 +302,7 @@ class _MainscreenState extends State<Mainscreen> {
   Future<void> fetchTotalCreditCountYesterday(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
-          'http://127.0.0.1:4000/transaction-count-credit-yesterday?narrative=$narrative'));
+          'http://127.0.0.1:4000/transaction-count/credit-yesterday?narrative=$narrative'));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);

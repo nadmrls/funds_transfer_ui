@@ -3,6 +3,7 @@ import 'package:dashboard/widgets/bar_graph.dart';
 import 'package:dashboard/widgets/custom_container.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'dart:convert';
 import 'package:shimmer/shimmer.dart';
 
@@ -20,12 +21,12 @@ class _MainscreenState extends State<Mainscreen> {
   bool isLoading = true;
   double? totalCreditAmount;
   double? totalDebitAmount;
-  double totalCreditAmountYes = 229.1;
-  double totalDebitAmountYes = 123.24;
+  double totalCreditAmountYes = 0.0;
+  double totalDebitAmountYes = 0.0;
   int? totalDebitCount;
   int? totalCreditCount;
-  int totalDebitCountYes = 10;
-  int totalCreditCountYes = 10;
+  int totalDebitCountYes = 0;
+  int totalCreditCountYes = 0;
   List<Map<String, dynamic>> transactions = [];
   List<String> narrativeValue = [];
   List<double> countTransac = [];
@@ -126,6 +127,10 @@ class _MainscreenState extends State<Mainscreen> {
       fetchTotalDebitAmount(narrative),
       fetchTotalDebitCount(narrative),
       fetchTotalCreditCount(narrative),
+      fetchTotalDebitCountYesterday(narrative),
+      fetchTotalCreditCountYesterday(narrative),
+      fetchTotalCreditAmountYesterday(narrative),
+      fetchTotalDebitAmountYesterday(narrative)
     ]);
 
     // After fetching the totals, compare and set the isHigher flags
@@ -159,6 +164,24 @@ class _MainscreenState extends State<Mainscreen> {
     }
   }
 
+  Future<void> fetchTotalCreditAmountYesterday(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/total-credit-amount-yesterday?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalCreditAmountYes = data['total_credit_amount'];
+        });
+      } else {
+        print('Failed to fetch total credit amount: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total credit amount: $error');
+    }
+  }
+
   Future<void> fetchTotalDebitAmount(String narrative) async {
     try {
       final response = await client.get(Uri.parse(
@@ -168,6 +191,24 @@ class _MainscreenState extends State<Mainscreen> {
         final data = jsonDecode(response.body);
         setState(() {
           totalDebitAmount = data['total_debit_amount'];
+        });
+      } else {
+        print('Failed to fetch total debit amount: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total debit amount: $error');
+    }
+  }
+
+  Future<void> fetchTotalDebitAmountYesterday(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/total-debit-amount-yesterday?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalDebitAmountYes = data['total_debit_amount'];
         });
       } else {
         print('Failed to fetch total debit amount: ${response.statusCode}');
@@ -213,129 +254,236 @@ class _MainscreenState extends State<Mainscreen> {
     }
   }
 
+  Future<void> fetchTotalDebitCountYesterday(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/transaction-count-debit-yesterday?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalDebitCountYes = data['count'];
+        });
+      } else {
+        print('Failed to fetch total debit count: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total debit count: $error');
+    }
+  }
+
+  Future<void> fetchTotalCreditCountYesterday(String narrative) async {
+    try {
+      final response = await client.get(Uri.parse(
+          'http://127.0.0.1:4000/transaction-count-credit-yesterday?narrative=$narrative'));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        setState(() {
+          totalCreditCountYes = data['count'];
+        });
+      } else {
+        print('Failed to fetch total credit count: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error fetching total credit count: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.mainscreenBG,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: isLoading ? 0 : 10),
-                decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.grey, width: 1),
-                ),
-                child: isLoading
-                    ? Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          height: 48.0,
-                          width: 230,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(15),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 40,
+              color: const Color.fromARGB(255, 42, 77, 124),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: isLoading ? 0 : 10),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: Colors.grey, width: 1),
+                    ),
+                    child: isLoading
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 48.0,
+                              width: 230,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                          )
+                        : DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              value: dropdownValue,
+                              icon: const Icon(Icons.arrow_drop_down,
+                                  color: Color.fromARGB(255, 123, 123, 123)),
+                              dropdownColor: AppColors.primaryColor,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 123, 123, 123),
+                                fontWeight: FontWeight.bold,
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                              onChanged: (String? newValue) {
+                                if (newValue != null) {
+                                  setState(() {
+                                    dropdownValue = newValue;
+                                  });
+                                  fetchTotalAmounts(newValue);
+                                }
+                              },
+                              items: narratives.map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
                           ),
-                        ),
-                      )
-                    : DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          value: dropdownValue,
-                          icon: const Icon(Icons.arrow_drop_down,
-                              color: Color.fromARGB(255, 123, 123, 123)),
-                          dropdownColor: AppColors.primaryColor,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 123, 123, 123),
-                            fontWeight: FontWeight.bold,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomContainer(
+                            background: const Color.fromARGB(255, 90, 167, 195),
+                            test: isHigher,
+                            title: 'Debit',
+                            data_today: totalDebitAmount != null
+                                ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmount)}'
+                                : 'Loading...',
+                            data_yesterday: totalDebitAmountYes != null
+                                ? '₱ ${NumberFormat('#,##0.00').format(totalDebitAmountYes)}'
+                                : 'Loading...',
+                            titleIcon: Icon(
+                              Icons.remove_circle,
+                              color: const Color.fromARGB(255, 42, 77, 124),
+                            )),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: CustomContainer(
+                            background: Color.fromARGB(255, 90, 195, 129),
+                            test: isHigher2,
+                            title: 'Credit',
+                            data_today: totalCreditAmount != null
+                                ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmount)}'
+                                : 'Loading...',
+                            data_yesterday: totalCreditAmountYes != null
+                                ? '₱ ${NumberFormat('#,##0.00').format(totalCreditAmountYes)}'
+                                : 'Loading...',
+                            titleIcon: Icon(
+                              Icons.add_circle,
+                              color: const Color.fromARGB(255, 42, 77, 124),
+                            )),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: CustomContainer(
+                          background: const Color.fromARGB(255, 104, 189, 162),
+                          test: isHigher4,
+                          title: 'Debit Counter',
+                          data_today: totalDebitCount != null
+                              ? NumberFormat('#,##0').format(totalDebitCount)
+                              : 'Loading...',
+                          data_yesterday: totalDebitCountYes != null
+                              ? NumberFormat('#,##0').format(totalDebitCountYes)
+                              : 'Loading...',
+                          titleIcon: Icon(
+                            Icons.format_list_numbered,
+                            color: const Color.fromARGB(255, 42, 77, 124),
                           ),
-                          borderRadius: BorderRadius.circular(8),
-                          onChanged: (String? newValue) {
-                            if (newValue != null) {
-                              setState(() {
-                                dropdownValue = newValue;
-                              });
-                              fetchTotalAmounts(newValue);
-                            }
-                          },
-                          items: narratives
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
                         ),
                       ),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: CustomContainer(
-                      test: isHigher,
-                      title: 'Debit',
-                      data_today: totalDebitAmount != null
-                          ? totalDebitAmount.toString()
-                          : 'Loading...',
-                      data_yesterday: '300',
-                      comment: 'Try comment',
-                    ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: CustomContainer(
+                            background: const Color.fromARGB(255, 82, 153, 212),
+                            test: isHigher3,
+                            title: 'Credit Counter',
+                            data_today: totalCreditCount != null
+                                ? NumberFormat('#,##0').format(totalCreditCount)
+                                : 'Loading...',
+                            data_yesterday: totalCreditCountYes != null
+                                ? NumberFormat('#,##0')
+                                    .format(totalCreditCountYes)
+                                : 'Loading...',
+                            titleIcon: Icon(
+                              Icons.check_circle,
+                              color: const Color.fromARGB(255, 42, 77, 124),
+                            )),
+                      ),
+                      const SizedBox(width: 20),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomContainer(
-                      test: isHigher2,
-                      title: 'Credit',
-                      data_today: totalCreditAmount != null
-                          ? totalCreditAmount.toString()
-                          : 'Loading...',
-                      data_yesterday: '',
-                    ),
+                  const SizedBox(height: 20),
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          border: Border(
+                            top: BorderSide(color: Colors.grey),
+                            left: BorderSide(color: Colors.grey),
+                            right: BorderSide(color: Colors.grey),
+                            bottom: BorderSide.none, // No border on the bottom
+                          ),
+                        ),
+                        height: 40,
+                        child: Row(
+                          children: [
+                            SizedBox(width: 10),
+                            Icon(
+                              Icons.bar_chart_outlined,
+                              color: Colors.grey[700],
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              'Bar Chart',
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[700],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            border: Border.all(color: Colors.grey, width: 1)),
+                        width: double.infinity,
+                        height: 450,
+                        child: BarGraph(
+                          count: countTransac,
+                          narratives: narrativeValue,
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomContainer(
-                      test: isHigher3,
-                      title: 'Credit Counter',
-                      data_today: totalCreditCount != null
-                          ? totalCreditCount.toString()
-                          : 'Loading...',
-                      data_yesterday: '',
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: CustomContainer(
-                      test: isHigher4,
-                      title: 'Debit Counter',
-                      data_today: totalDebitCount != null
-                          ? totalDebitCount.toString()
-                          : 'Loading...',
-                      data_yesterday: '',
-                    ),
-                  ),
-                  const SizedBox(width: 20),
                 ],
               ),
-              const SizedBox(height: 20),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(15)),
-                width: double.infinity,
-                height: 550,
-                child: BarGraph(
-                  count: countTransac,
-                  narratives: narrativeValue,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

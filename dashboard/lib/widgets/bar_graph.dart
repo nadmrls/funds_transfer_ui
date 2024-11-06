@@ -41,13 +41,32 @@ class MonthlySalesBarChart extends StatelessWidget {
         return SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(10.0),
             child: SizedBox(
-              width: narratives.length * 80.0, // Adjust width for each bar
-              height: 900,
+              width: narratives.length * 110,
+              height: 400,
               child: BarChart(
                 BarChartData(
-                  gridData: FlGridData(show: false),
+                  gridData: FlGridData(
+                    show: true,
+                    drawHorizontalLine: true,
+                    horizontalInterval:
+                        _getInterval(count), // Interval for horizontal lines
+                    getDrawingHorizontalLine: (value) {
+                      return FlLine(
+                        color: Colors.grey.withOpacity(0.5),
+                        strokeWidth: 1,
+                      );
+                    },
+                    drawVerticalLine: true,
+                    verticalInterval: 1, // Interval for vertical lines
+                    getDrawingVerticalLine: (value) {
+                      return FlLine(
+                        color: Colors.grey.withOpacity(0.5),
+                        strokeWidth: 1,
+                      );
+                    },
+                  ),
                   titlesData: FlTitlesData(
                     leftTitles: AxisTitles(
                       sideTitles: SideTitles(
@@ -94,8 +113,7 @@ class MonthlySalesBarChart extends StatelessWidget {
                                   textAlign: TextAlign.center,
                                   softWrap: true, // Enable wrapping
                                   maxLines: 3, // Limit to 2 lines if needed
-                                  overflow: TextOverflow
-                                      .ellipsis, // Add ellipsis if too long
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             );
@@ -114,13 +132,18 @@ class MonthlySalesBarChart extends StatelessWidget {
                     border: Border.all(color: Colors.grey, width: 1),
                   ),
                   barGroups: count.asMap().entries.map((entry) {
+                    int index = entry.key;
                     return BarChartGroupData(
-                      x: entry.key,
+                      x: index,
                       barRods: [
                         BarChartRodData(
                           toY: entry.value,
-                          color: const Color.fromARGB(255, 0, 0, 0),
-                          width: 15,
+                          color: index % 2 == 0
+                              ? const Color.fromARGB(
+                                  255, 42, 77, 124) // Color 1
+                              : const Color.fromARGB(
+                                  255, 74, 138, 191), // Color 2
+                          width: 30,
                           borderRadius: BorderRadius.zero,
                         ),
                       ],
